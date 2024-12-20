@@ -80,8 +80,6 @@ jobs:
       - name: Run ESLint
         run: npx eslint src/
           --config .eslintrc.json
-          --ignore-path .eslintignore
-          --ext .js,.ts
           --max-warnings 5
           --format @microsoft/eslint-formatter-sarif
           --output-file eslint-results.sarif
