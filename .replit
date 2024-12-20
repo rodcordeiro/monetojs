@@ -1,8 +1,8 @@
 modules = ["nodejs-20"]
-run = "npm run start:dev"
+run = "pnpm start:dev"
 
 [nix]
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "npm run start:dev"]
+run = ["sh", "-c", "pnpm start:dev"]
