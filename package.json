@@ -1,0 +1,37 @@
+{
+  "name": "monetojs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start:prod": "node dist/index.js",
+    "start:dev": "tsx watch src/index.ts",
+    "prebuild": "npm run format && rimraf dist",
+    "build": "tsc -b .",
+    "format": "npm run lint && npm run pretty",
+    "pretty": "prettier --ignore-path .eslintignore --write .",
+    "lint": "eslint --ignore-path .eslintignore --fix --ext .ts,.tsx,.js,.jsx ."
+  },
+  "keywords": [],
+  "author": "Rodrigo Cordeiro <rodrigomendoncca@gmail.com> (https://rodcordeiro.com.br/)",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.2",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^1.9.0",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7",
+    "mysql": "^2.18.1",
+    "pagination.djs": "^4.0.17",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20"
+  }
+}
