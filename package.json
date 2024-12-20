@@ -5,11 +5,11 @@
   "scripts": {
     "start:prod": "node dist/index.js",
     "start:dev": "tsx watch src/index.ts",
-    "prebuild": "npm run format && rimraf dist",
-    "build": "tsc -b .",
-    "format": "npm run lint && npm run pretty",
     "pretty": "prettier --ignore-path .eslintignore --write .",
-    "lint": "eslint --fix src/"
+    "lint": "eslint --max-warnings 5 --fix src/",
+    "format": "npm run lint && npm run pretty",
+    "prebuild": "npm run format && rimraf dist",
+    "build": "tsc -b ."
   },
   "keywords": [],
   "author": "Rodrigo Cordeiro <rodrigomendoncca@gmail.com> (https://rodcordeiro.com.br/)",

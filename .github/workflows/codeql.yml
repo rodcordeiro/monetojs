@@ -79,7 +79,6 @@ jobs:
 
       - name: Run ESLint
         run: npx eslint src/
-          --config .eslintrc.json
           --max-warnings 5
           --format @microsoft/eslint-formatter-sarif
           --output-file eslint-results.sarif
