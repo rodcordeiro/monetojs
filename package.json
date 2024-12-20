@@ -5,7 +5,7 @@
   "scripts": {
     "start:prod": "node dist/index.js",
     "start:dev": "tsx watch src/index.ts",
-    "pretty": "prettier --ignore-path .eslintignore --write .",
+    "pretty": "prettier --ignore-path .eslintignore --write src/",
     "lint": "eslint --max-warnings 5 --fix src/",
     "format": "npm run lint && npm run pretty",
     "prebuild": "npm run format && rimraf dist",
@@ -32,6 +32,7 @@
     "mysql": "^2.18.1",
     "pagination.djs": "^4.0.17",
     "reflect-metadata": "^0.2.2",
+    "rimraf": "^6.0.1",
     "typeorm": "^0.3.20"
   }
 }
