@@ -21,9 +21,17 @@ export default class RegisterCommand {
         discord_id: interaction.user.id,
         id,
       });
-      return await interaction.reply({ content: 'Malfeito feito! O registro está feito!', ephemeral: true });
+      return await interaction.reply({
+        content: 'Malfeito feito! O registro está feito!',
+        ephemeral: true,
+      });
     } catch (e) {
-      return await interaction.reply({ content: 'Woho! Algo de errado não está certo. Os anciões irão verificar meus registros!', ephemeral: true });
+      console.error(e);
+      return await interaction.reply({
+        content:
+          'Woho! Algo de errado não está certo. Os anciões irão verificar meus registros!',
+        ephemeral: true,
+      });
     }
   }
 }

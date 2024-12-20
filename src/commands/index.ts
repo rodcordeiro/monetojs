@@ -1,4 +1,3 @@
- 
 import { Collection } from 'discord.js';
 import fs from 'fs';
 import { client } from '../core/discord/client.discord';

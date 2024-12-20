@@ -6,8 +6,7 @@ export const StringUtils = {
     str.replace(/(_\w)/g, (m) => m[1].toUpperCase()),
 
   Capitalize: (str: string) => str.charAt(0).toUpperCase() + str.slice(1),
-
-  ObjectToUpperCase: (obj: object) => {
+  ObjectToUpperCase: (obj: Record<string, string | number | unknown>) => {
     for (const key in obj)
       if (typeof obj[key] === 'string') obj[key] = obj[key].toUpperCase();
     return obj;
