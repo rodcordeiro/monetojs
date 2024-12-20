@@ -1,9 +1,9 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, JoinColumn, OneToOne } from 'typeorm';
 
 import { BaseEntity } from '../../common/entities/base.entity';
 
-@Entity({ name: 'tb_bot_user' })
+@Entity({ name: 'TB_USERS' })
 export class UserEntity extends BaseEntity {
-  @Column({ type: 'varchar' })
-  discord_id!: string;
+  /** COLUMNS */
+  name?: string;
 }
