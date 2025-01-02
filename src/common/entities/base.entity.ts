@@ -46,8 +46,8 @@ export abstract class BaseEntity {
     this.updatedAt.setHours(this.createdAt!.getHours() - 3);
   }
 
-  updateDeletedAt() {
-    this.deletedAt = new Date();
-    this.deletedAt.setHours(this.deletedAt.getHours() - 3);
-  }
+  // updateDeletedAt() {
+  //   this.deletedAt = new Date();
+  //   this.deletedAt.setHours(this.deletedAt.getHours() - 3);
+  // }
 }

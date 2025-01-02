@@ -3,11 +3,13 @@ import { UserRepository } from '../database/repositories/user.repository';
 
 export class UserServices {
   static async isRegistered(id: string) {
+    console.log({ id });
     const User = await BotUserRepository.findOneBy({ discord_id: id });
     return User;
   }
   static async CreateOrUpdate(payload: { id: string; discord_id: string }) {
     const User = await UserRepository.findOneByOrFail({ uuid: payload.id });
+
     const botUser = await BotUserRepository.findOneBy({
       discord_id: payload.discord_id,
     });
@@ -16,6 +18,7 @@ export class UserServices {
       await BotUserRepository.save(botUser);
       return botUser;
     }
+
     const newBotUser = BotUserRepository.create({
       discord_id: payload.discord_id,
       owner: User.id,

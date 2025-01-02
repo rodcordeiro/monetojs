@@ -48,8 +48,8 @@ export class TbUser1734710729858 implements MigrationInterface {
           {
             name: 'deleted_at',
             type: 'timestamp',
-            default: 'CURRENT_TIMESTAMP',
-            onUpdate: 'CURRENT_TIMESTAMP',
+            isNullable: true,
+            default: null,
           },
         ],
       }),
