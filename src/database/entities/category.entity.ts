@@ -11,13 +11,13 @@ export enum CategoryClassification {
   Wish = 'wish',
 }
 
-@Entity({ name: `${process.env.KEY_TABLE_NAME}_categories`.toUpperCase() })
+@Entity({ name: 'TB_CATEGORIES' })
 export class CategoryEntity extends BaseEntity {
   /** Columns */
-  @Column({type:'varchar'})
+  @Column({ type: 'varchar' })
   name!: string;
 
-  @Column({type:'varchar'})
+  @Column({ type: 'varchar' })
   icon?: string;
 
   @Column({
