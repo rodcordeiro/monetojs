@@ -58,16 +58,14 @@ export default class TransactionsCommand {
     if (focusedValue.name === 'account') {
       const qb = CategoryRepository.createQueryBuilder('category');
 
-      const categories = await qb
-        .where('category.owner = :owner', {
-          owner: (user.owner as unknown as UserEntity).id,
-        })
-        .getMany();
-      filtered = categories
-        .filter((category) =>
-          category.name?.toLowerCase().includes(focusedValue.value),
-        )
-        .map(({ name, uuid }) => ({ name, value: uuid }));
+      filtered = (
+        await qb
+          .where('category.owner = :owner', {
+            owner: (user.owner as unknown as UserEntity).id,
+          })
+          .andWhere("name like '%:name%'", { name: focusedValue.value })
+          .getMany()
+      ).map((category) => ({ name: category.name, value: category.uuid }));
     }
     if (focusedValue.name === 'category') {
       const qb = CategoryRepository.createQueryBuilder('category');
