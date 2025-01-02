@@ -24,8 +24,9 @@ export default class TransactionsCommand {
           content: 'Você precisa se registrar primeiro!',
           ephemeral: true,
         });
-      await interaction.deferReply({ ephemeral: false });
+      await interaction.deferReply({ ephemeral: true });
       const qb = CategoryRepository.createQueryBuilder('category');
+
       const categories = await qb
         .where('category.owner = :owner', {
           owner: (user.owner as unknown as UserEntity).id,
@@ -35,24 +36,23 @@ export default class TransactionsCommand {
         const embed = new EmbedBuilder()
           .setColor(Colors.Blurple)
           .setTitle(`Aqui estão suas categorias`)
-          .setThumbnail(
-            'https://freepngimg.com/save/140471-pip-boy-images-fallout-download-free-image/1600x2350',
-          )
+          .setThumbnail('https://moneto-app.gabrielbizzi.com.br/logo.svg')
           .setFooter({
-            text: `Page: ${index + 1}/${arr.length}. Dwellers: ${categories.length}`,
+            text: `Page: ${index + 1}/${arr.length}. Categorias: ${categories.length}`,
           });
         data.map((item) =>
           embed.addFields([
             {
               name: 'Name: ',
-              value: item.name,
+              value: `[${item.positive ? '+' : '-'}]${!!item.parentCategory && `[${categories.find((i) => i.id === item.parentCategory)?.name}]`} ${item.name}`,
               inline: true,
             },
-            {
-              name: 'positive: ',
-              value: item.positive ? 'Sim' : 'Não',
-              inline: true,
-            },
+            // {
+            //   name: 'positive: ',
+            //   value: item.positive ? 'Sim' : 'Não',
+            //   inline: true,
+            // },
+            { name: '\u200B', value: '\u200B', inline: true },
             { name: '\u200B', value: '\u200B', inline: true },
           ] as APIEmbedField[]),
         );
@@ -68,6 +68,7 @@ export default class TransactionsCommand {
       const pagination = new Pagination(interaction, {
         idle: 30000,
         loop: true,
+        ephemeral: true,
       });
 
       pagination.setEmbeds(embeds);
