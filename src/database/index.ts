@@ -19,7 +19,7 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   migrationsRun: true,
   migrationsTableName: 'tb_bot_migrations',
-  logging: true,
+  logging: process.env.NODE_ENV === 'development',
   name: 'database',
   // debug: true,
 });

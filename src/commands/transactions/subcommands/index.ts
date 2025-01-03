@@ -1,5 +1,6 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { createTransaction } from './create';
+import { UserEntity } from '../../../database/entities';
 
 function replyMessage(interaction: ChatInputCommandInteraction) {
   if (interaction.replied)
@@ -11,13 +12,14 @@ function replyMessage(interaction: ChatInputCommandInteraction) {
 
 export const actionsMapper = async (
   interaction: ChatInputCommandInteraction,
+  user: UserEntity,
 ) => {
   switch (interaction.options.getSubcommand()) {
     // case 'list':
     //   ListDwellers(interaction);
     //   break;
     case 'create':
-      createTransaction(interaction);
+      createTransaction(interaction, user);
       break;
     // case 'update':
     //   UpdateDweller(interaction);

@@ -1,6 +1,8 @@
 declare global {
   namespace NodeJS {
     export interface ProcessEnv {
+      readonly NODE_ENV: 'development' | 'production' | 'test';
+
       /** Bot Token */
       readonly TOKEN: string;
       /** Application or client ID */
@@ -19,5 +21,4 @@ declare global {
       readonly DB_NAME: string;
     }
   }
-  
 }
