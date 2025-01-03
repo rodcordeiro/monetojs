@@ -30,6 +30,7 @@ export class TransactionsServices {
     });
     const transaction = await TransactionsRepository.save({
       ...details,
+      date: new Date().toISOstring(),
       account: account.id,
       category: category.id,
       owner: user.id,
