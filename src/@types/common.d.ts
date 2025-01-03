@@ -1,7 +1,8 @@
 declare global {
+  type Value = string | number;
   type AutocompleteOption = {
     name: string;
-    value: string | number;
+    value: Value;
   };
 }
 export {};

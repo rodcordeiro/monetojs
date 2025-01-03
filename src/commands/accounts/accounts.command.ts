@@ -2,13 +2,14 @@ import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
 import { UserServices } from '../../services/user.service';
 import { createBatch } from '../../common/helpers/batch.helper';
 import { Pagination } from 'pagination.djs';
-import { CategoriesServices } from '../../services/categories.service';
 import { createEmbed } from '../../common/helpers/embeds.helper';
+import { AccountsServices } from '../../services/accounts.service';
+import { formatToCurrency } from '../../common/helpers/transformers.helper';
 
-export default class TransactionsCommand {
+export default class AccountsCommand {
   data = new SlashCommandBuilder()
-    .setName('categories')
-    .setDescription('List users categories');
+    .setName('accounts')
+    .setDescription('List user accounts');
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
@@ -19,20 +20,28 @@ export default class TransactionsCommand {
           ephemeral: true,
         });
       await interaction.deferReply({ ephemeral: true });
-      const categories = await CategoriesServices.findOwns(user);
-      const embeds = createBatch(categories, 10).map((data, index, arr) =>
+      const accounts = await AccountsServices.findOwns(user);
+      const embeds = createBatch(accounts, 6).map((data, index, arr) =>
         createEmbed(
           data,
-          (item) => ({
-            name: 'Name: ',
-            value: `[${item.positive ? '+' : '-'}] ${item.name}`,
-            inline: false,
-          }),
+          (item) => [
+            {
+              name: 'Name: ',
+              value: item.name,
+              inline: true,
+            },
+            {
+              name: 'Ammount: ',
+              value: formatToCurrency(item.ammount),
+              inline: true,
+            },
+            { name: '\u200B', value: '\u200B', inline: true },
+          ],
           {
-            title: 'Aqui estão suas categorias',
+            title: 'Aqui estão suas contas',
             page: index + 1,
             totalPages: arr.length,
-            totalItems: categories.length,
+            totalItems: accounts.length,
           },
         ),
       );

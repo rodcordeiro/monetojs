@@ -5,48 +5,58 @@ import {
 } from 'discord.js';
 import { UserServices } from '../../services/user.service';
 import { actionsMapper } from './subcommands';
-import { CategoryRepository } from '../../database/repositories';
+import { CategoriesServices } from '../../services/categories.service';
+import { AccountsServices } from '../../services/accounts.service';
 import { UserEntity } from '../../database/entities';
 
 export default class TransactionsCommand {
   data = new SlashCommandBuilder()
     .setName('transactions')
     .setDescription('List users last transactions')
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName('create')
-        .setDescription('Create a new transaction')
-        .addStringOption((option) =>
-          option
-            .setName('account')
-            .setDescription('Account to be registered')
-            .setAutocomplete(true)
-            .setRequired(true),
-        )
-        .addStringOption((option) =>
-          option
-            .setName('category')
-            .setDescription('Transaction categoriy')
-            .setAutocomplete(true)
-            .setRequired(true),
-        )
-        .addStringOption((option) =>
-          option
-            .setName('description')
-            .setDescription('Transaction description')
-            .setRequired(true),
-        )
-        .addNumberOption((option) =>
-          option
-            .setName('value')
-            .setDescription('Transaction value')
-            .setRequired(true),
-        ),
+    .addSubcommand(
+      (subcommand) =>
+        subcommand
+          .setName('create')
+          .setDescription('Create a new transaction')
+          .addStringOption((option) =>
+            option
+              .setName('account')
+              .setDescription('Account to register the transaction')
+              .setAutocomplete(true)
+              .setRequired(true),
+          )
+          .addStringOption((option) =>
+            option
+              .setName('category')
+              .setDescription('Transaction category')
+              .setAutocomplete(true)
+              .setRequired(true),
+          )
+          .addStringOption((option) =>
+            option
+              .setName('description')
+              .setDescription(
+                'Transaction description. Use this as label for the transaction',
+              )
+              .setRequired(true),
+          )
+          .addNumberOption((option) =>
+            option
+              .setName('value')
+              .setDescription(
+                'Transaction value. Use _"."_ to inform decimal values',
+              )
+              .setRequired(true),
+          ),
+      // .addStringOption((option) =>
+      //   option
+      //     .setName('objective')
+      //     .setDescription(
+      //       'Is this transaction linked to an objective? Define here',
+      //     )
+      //     .setRequired(false),
+      // ),
     );
-  // .addNumberOption((option) =>
-  //   option.setName('value').setRequired(true).setMinValue(0.01),
-  // ),
-  // );
 
   async autocomplete(interaction: AutocompleteInteraction) {
     const focusedValue = interaction.options.getFocused(true);
@@ -56,32 +66,25 @@ export default class TransactionsCommand {
     if (!user) return await interaction.respond([]);
 
     if (focusedValue.name === 'account') {
-      const qb = CategoryRepository.createQueryBuilder('category');
-
-      filtered = (
-        await qb
-          .where('category.owner = :owner', {
-            owner: (user.owner as unknown as UserEntity).id,
-          })
-          .andWhere("name like '%:name%'", { name: focusedValue.value })
-          .getMany()
-      ).map((category) => ({ name: category.name, value: category.uuid }));
+      const accounts = await AccountsServices.findOwns(user);
+      filtered = accounts
+        .filter((category) =>
+          category.name?.toLowerCase().includes(focusedValue.value),
+        )
+        .flatMap(({ name, uuid }) => ({ name, value: uuid }))
+        .slice(0, 10);
     }
-    if (focusedValue.name === 'category') {
-      const qb = CategoryRepository.createQueryBuilder('category');
 
-      const categories = await qb
-        .where('category.owner = :owner', {
-          owner: (user.owner as unknown as UserEntity).id,
-        })
-        .getMany();
+    if (focusedValue.name === 'category') {
+      const categories = await CategoriesServices.findOwns(user);
+
       filtered = categories
         .filter((category) =>
           category.name?.toLowerCase().includes(focusedValue.value),
         )
-        .map(({ name, uuid }) => ({ name, value: uuid }));
+        .flatMap(({ name, uuid }) => ({ name, value: uuid }))
+        .slice(0, 10);
     }
-    console.log({ filtered });
 
     await interaction.respond(filtered);
   }
@@ -95,7 +98,10 @@ export default class TransactionsCommand {
           ephemeral: true,
         });
 
-      return await actionsMapper(interaction);
+      return await actionsMapper(
+        interaction,
+        user.owner as unknown as UserEntity,
+      );
     } catch (e) {
       console.error(e);
       return await interaction.reply({
