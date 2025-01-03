@@ -21,38 +21,19 @@ export default class HelpCommand {
           (c.data as unknown as Record<string, string>).description || '\u200B',
       };
     });
-    console.log(commandData);
 
-    const embeds = createBatch(
-      [
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-        { name: 'help', value: 'me help pelamor de deus' },
-      ],
-      5,
-    ).map((data) =>
+    const embeds = createBatch(commandData ?? [], 6).map((data) =>
       createEmbed(
         data,
-        (item) => {
-          console.log({ item });
-          return {
-            name: StringUtils.Capitalize(item.name),
-            value: item.value.toString(),
-            inline: false,
-          };
-        },
+        (item) => ({
+          name: StringUtils.Capitalize(item.name),
+          value: item.value.toString(),
+          inline: false,
+        }),
         {
           title: 'Command list:',
           description:
-            '_Commands without description could be context commands. Tried my best to maintain self-describing_',
+            '_Commands without description could be context commands. Tried my best to maintain self-describing. It dosent show subcommands helps yet._',
           customFooter: {
             text: `v${version}`,
           },
