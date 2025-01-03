@@ -10,4 +10,4 @@ COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm run build
 
-CMD [ "node","dist/index.js" ]
+CMD [ "node","dist/src/index.js" ]
