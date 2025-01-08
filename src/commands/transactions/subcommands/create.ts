@@ -30,6 +30,8 @@ export async function createTransaction(
       }),
       {
         title: 'Nova transação',
+        thumbnail:
+          'https://raw.githubusercontent.com/rodcordeiro/monetojs/refs/heads/main/src/assets/pay_it.jpg',
       },
     );
     return await interaction.editReply({
