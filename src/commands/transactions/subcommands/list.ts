@@ -1,4 +1,8 @@
-import { ChatInputCommandInteraction } from 'discord.js';
+import {
+  CacheType,
+  ChatInputCommandInteraction,
+  CommandInteractionOption,
+} from 'discord.js';
 import { Pagination } from 'pagination.djs';
 import { createEmbed } from '../../../common/helpers/embeds.helper';
 import { createBatch } from '../../../common/helpers/batch.helper';
@@ -14,7 +18,10 @@ export async function listTransactions(
   try {
     const options =
       interaction.options.data[0].options
-        ?.map((option: Record<string, unknown>) => [option.name, option.value])
+        ?.map((option: CommandInteractionOption<CacheType>) => [
+          option.name,
+          option.value,
+        ])
         .filter(Boolean) || [];
     const fields = Object.fromEntries(options);
     const transactions = await TransactionsServices.findOwns(user, fields);
