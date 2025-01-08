@@ -13,7 +13,7 @@ importers:
         version: 1.10.0
       discord.js:
         specifier: ^14.17.2
-        version: 14.17.2
+        version: 14.17.3
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
@@ -22,7 +22,7 @@ importers:
         version: 2.18.1
       pagination.djs:
         specifier: ^4.0.17
-        version: 4.0.17(discord.js@14.17.2)
+        version: 4.0.17(discord.js@14.17.3)
       reflect-metadata:
         specifier: ^0.2.2
         version: 0.2.2
@@ -500,8 +500,8 @@ packages:
   discord-api-types@0.37.115:
     resolution: {integrity: sha512-ivPnJotSMrXW8HLjFu+0iCVs8zP6KSliMelhr7HgcB2ki1QzpORkb26m71l1pzSnnGfm7gb5n/VtRTtpw8kXFA==}
 
-  discord.js@14.17.2:
-    resolution: {integrity: sha512-mrH6ziLVtNtId4bV4bsaUt5jE6NUaiHMPqO5VsSw1VVhFnjFi9duD8ctlo90/6cUH+8uyKBkoq9mSJ35SuuZ7Q==}
+  discord.js@14.17.3:
+    resolution: {integrity: sha512-8/j8udc3CU7dz3Eqch64UaSHoJtUT6IXK4da5ixjbav4NAXJicloWswD/iwn1ImZEMoAV3LscsdO0zhBh6H+0Q==}
     engines: {node: '>=18'}
 
   dotenv@16.4.7:
@@ -1532,7 +1532,7 @@ snapshots:
 
   discord-api-types@0.37.115: {}
 
-  discord.js@14.17.2:
+  discord.js@14.17.3:
     dependencies:
       '@discordjs/builders': 1.10.0
       '@discordjs/collection': 1.5.3
@@ -1876,9 +1876,9 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
-  pagination.djs@4.0.17(discord.js@14.17.2):
+  pagination.djs@4.0.17(discord.js@14.17.3):
     dependencies:
-      discord.js: 14.17.2
+      discord.js: 14.17.3
 
   parent-module@1.0.1:
     dependencies:
