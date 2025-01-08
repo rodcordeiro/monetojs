@@ -2,7 +2,7 @@ import { ChatInputCommandInteraction } from 'discord.js';
 import { Pagination } from 'pagination.djs';
 import { createEmbed } from '../../../common/helpers/embeds.helper';
 import { createBatch } from '../../../common/helpers/batch.helper';
-import { TransactionsServices } from '../../../services/trasnsactions.service';
+import { TransactionsServices } from '../../../services/transactions.service';
 import { UserEntity } from '../../../database/entities';
 import { StringUtils } from '../../../common/helpers/string.helper';
 import { formatToCurrency } from '../../../common/helpers/transformers.helper';
@@ -14,7 +14,7 @@ export async function listTransactions(
   try {
     const options =
       interaction.options.data[0].options
-        ?.map((option) => [option.name, option.value])
+        ?.map((option: Record<string, unknown>) => [option.name, option.value])
         .filter(Boolean) || [];
     const fields = Object.fromEntries(options);
     const transactions = await TransactionsServices.findOwns(user, fields);
