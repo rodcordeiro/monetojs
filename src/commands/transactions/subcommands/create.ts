@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction } from 'discord.js';
 import { createEmbed } from '../../../common/helpers/embeds.helper';
-import { TransactionsServices } from '../../../services/trasnsactions.service';
+import { TransactionsServices } from '../../../services/transactions.service';
 import { UserEntity } from '../../../database/entities';
 import { StringUtils } from '../../../common/helpers/string.helper';
 
