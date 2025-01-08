@@ -56,6 +56,25 @@ export default class TransactionsCommand {
       //     )
       //     .setRequired(false),
       // ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('list')
+        .setDescription('List last trsnsactions')
+        .addStringOption((option) =>
+          option
+            .setName('account')
+            .setDescription('Account to register the transaction')
+            .setAutocomplete(true)
+            .setRequired(false),
+        )
+        .addStringOption((option) =>
+          option
+            .setName('category')
+            .setDescription('Transaction category')
+            .setRequired(false)
+            .setAutocomplete(true),
+        ),
     );
 
   async autocomplete(interaction: AutocompleteInteraction) {
