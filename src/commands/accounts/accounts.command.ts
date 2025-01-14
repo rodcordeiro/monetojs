@@ -1,15 +1,37 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import {
+  SlashCommandBuilder,
+  ChatInputCommandInteraction,
+  AutocompleteInteraction,
+} from 'discord.js';
 import { UserServices } from '../../services/user.service';
-import { createBatch } from '../../common/helpers/batch.helper';
-import { Pagination } from 'pagination.djs';
-import { createEmbed } from '../../common/helpers/embeds.helper';
+import { actionsMapper } from './subcommands';
+import { UserEntity } from '../../database/entities';
+import { ListAccountsCommand } from './subcommands/list';
+import { CreateAccountsCommand } from './subcommands/create';
 import { AccountsServices } from '../../services/accounts.service';
-import { formatToCurrency } from '../../common/helpers/transformers.helper';
 
 export default class AccountsCommand {
   data = new SlashCommandBuilder()
     .setName('accounts')
-    .setDescription('List user accounts');
+    .setDescription('Manage user accounts')
+    .addSubcommand(new ListAccountsCommand().data)
+    .addSubcommand(new CreateAccountsCommand().data);
+
+  async autocomplete(interaction: AutocompleteInteraction) {
+    const focusedValue = interaction.options.getFocused(true);
+    let filtered: Array<AutocompleteOption> = [];
+
+    const user = await UserServices.isRegistered(interaction.user.id);
+    if (!user) return await interaction.respond([]);
+
+    if (focusedValue.name === 'payment') {
+      const types = await AccountsServices.listPaymentTypes();
+      filtered = types
+        .filter((type) => type.name?.toLowerCase().includes(focusedValue.value))
+        .slice(0, 10);
+    }
+    await interaction.respond(filtered);
+  }
 
   async execute(interaction: ChatInputCommandInteraction) {
     try {
@@ -19,50 +41,10 @@ export default class AccountsCommand {
           content: 'Você precisa se registrar primeiro!',
           ephemeral: true,
         });
-      await interaction.deferReply({ ephemeral: true });
-      const accounts = await AccountsServices.findOwns(user);
-      const embeds = createBatch(accounts, 6).map((data, index, arr) =>
-        createEmbed(
-          data,
-          (item) => [
-            {
-              name: 'Name: ',
-              value: item.name,
-              inline: true,
-            },
-            {
-              name: 'Ammount: ',
-              value: formatToCurrency(item.ammount),
-              inline: true,
-            },
-            { name: '\u200B', value: '\u200B', inline: true },
-          ],
-          {
-            title: 'Aqui estão suas contas',
-            page: index + 1,
-            totalPages: arr.length,
-            totalItems: accounts.length,
-          },
-        ),
+      return await actionsMapper(
+        interaction,
+        user.owner as unknown as UserEntity,
       );
-
-      if (embeds.length === 1) {
-        return await interaction.editReply({
-          embeds,
-        });
-      }
-
-      const pagination = new Pagination(interaction, {
-        idle: 30000,
-        loop: true,
-        ephemeral: true,
-      });
-
-      pagination.setEmbeds(embeds);
-
-      const payload = pagination.ready();
-      const message = await interaction.editReply(payload);
-      pagination.paginate(message);
     } catch (e) {
       console.error(e);
       return await interaction.reply({
