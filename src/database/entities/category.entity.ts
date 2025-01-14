@@ -56,6 +56,21 @@ export class CategoryEntity extends BaseEntity {
   })
   classification?: CategoryClassification;
 
+  @Column({
+    type: 'bool',
+    comment: 'Defines this as origin category for transfering between accounts',
+    default: false,
+  })
+  transferOrigin?: boolean;
+
+  @Column({
+    type: 'bool',
+    comment:
+      'Defines this as destination category for transfering between accounts',
+    default: false,
+  })
+  transferDestination?: boolean;
+
   /** Joins */
   @ManyToOne(() => UserEntity, {
     eager: false,

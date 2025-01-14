@@ -43,32 +43,36 @@ export class CreateAccountsCommand {
           .filter(Boolean) || [];
       const fields = Object.fromEntries(options);
 
-      const data = (await AccountsServices.create(fields, user)) as Record<
-        string,
-        string | number
-      >;
+      const data = (await AccountsServices.create(
+        { ...fields, paymentType: fields.payment },
+        user,
+      )) as Record<string, string | number>;
       console.log({ fields, data });
-      // const embed = createEmbed(
-      //   [data],
-      //   (item) => [
-      //     {
-      //       name: 'Name',
-      //       value: item.name.toString(),
-      //       inline: true,
-      //     },
-      //     {
-      //       name: 'Value',
-      //       value: formatToCurrency(item.value as number),
-      //       inline: true,
-      //     },
-      //   ],
-      //   {
-      //     title: 'Nova conta!',
-      //   },
-      // );
+      const embed = createEmbed(
+        [data],
+        (item) => [
+          {
+            name: 'Name',
+            value: item.name.toString(),
+            inline: false,
+          },
+          {
+            name: 'Value',
+            value: formatToCurrency(item.ammount as number),
+            inline: true,
+          },
+          {
+            name: 'Threshold',
+            value: formatToCurrency(item.threshold as number),
+            inline: true,
+          },
+        ],
+        {
+          title: 'Nova conta!',
+        },
+      );
       return await interaction.editReply({
-        content: 'teste',
-        // embeds: [embed],
+        embeds: [embed],
       });
     } catch (e) {
       console.error(e);

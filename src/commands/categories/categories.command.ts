@@ -4,6 +4,7 @@ import { createBatch } from '../../common/helpers/batch.helper';
 import { Pagination } from 'pagination.djs';
 import { CategoriesServices } from '../../services/categories.service';
 import { createEmbed } from '../../common/helpers/embeds.helper';
+import { UserEntity } from '../../database/entities';
 
 export default class TransactionsCommand {
   data = new SlashCommandBuilder()
@@ -19,7 +20,9 @@ export default class TransactionsCommand {
           ephemeral: true,
         });
       await interaction.deferReply({ ephemeral: true });
-      const categories = await CategoriesServices.findOwns(user);
+      const categories = await CategoriesServices.findOwns(
+        user.owner as unknown as UserEntity,
+      );
       const embeds = createBatch(categories, 10).map((data, index, arr) =>
         createEmbed(
           data,

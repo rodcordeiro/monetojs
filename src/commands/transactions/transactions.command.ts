@@ -40,7 +40,9 @@ export default class TransactionsCommand {
     }
 
     if (focusedValue.name === 'category') {
-      const categories = await CategoriesServices.findOwns(user);
+      const categories = await CategoriesServices.findOwns(
+        user.owner as unknown as UserEntity,
+      );
 
       filtered = categories
         .filter((category) =>
