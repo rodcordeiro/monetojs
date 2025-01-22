@@ -4,7 +4,8 @@ import { createBatch } from '../../common/helpers/batch.helper';
 import { Pagination } from 'pagination.djs';
 import { CategoriesServices } from '../../services/categories.service';
 import { createEmbed } from '../../common/helpers/embeds.helper';
-import { UserEntity } from '../../database/entities';
+import { UserEntity, CategoryEntity } from '../../database/entities';
+// import { ArrayUtils } from '@rodcordeiro/lib';
 
 export default class TransactionsCommand {
   data = new SlashCommandBuilder()
@@ -22,8 +23,26 @@ export default class TransactionsCommand {
       await interaction.deferReply({ ephemeral: true });
       const categories = await CategoriesServices.findOwns(
         user.owner as unknown as UserEntity,
+      ).then(
+        (data) =>
+          data.flatMap((item) =>
+            item.subcategories
+              ? [
+                  item,
+                  item.subcategories.map((i) => ({
+                    ...i,
+                    name: `[${item.name}] ${i.name}`,
+                  })),
+                ].flat()
+              : item,2
+          ) as CategoryEntity[],
       );
-      const embeds = createBatch(categories, 10).map((data, index, arr) =>
+
+      const embeds = createBatch(
+        categories,
+
+        10,
+      ).map((data, index, arr) =>
         createEmbed(
           data,
           (item) => ({
