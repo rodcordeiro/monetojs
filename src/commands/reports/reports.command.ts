@@ -4,7 +4,12 @@ import { UserServices } from '../../services/user.service';
 import QuickChart from 'quickchart-js';
 import { TransactionsRepository } from '../../database/repositories/transactions.repository';
 import { UserEntity } from '../../database/entities';
-import{formatToCurrency} from '../../common/helpers/transformers.helper'
+import { formatToCurrency } from '../../common/helpers/transformers.helper';
+
+interface NextReducer {
+  category: { positive: boolean };
+  value: number;
+}
 
 export default class ReportsCommand {
   data = new SlashCommandBuilder()
@@ -31,8 +36,8 @@ export default class ReportsCommand {
         owner: (user.owner as unknown as UserEntity).id,
       });
       const data = (await transactions.getMany()).reduce(
-        (prev, next: unknown) => {
-          if (next?.category.positive) {
+        (prev, next) => {
+          if ((next as unknown as NextReducer).category.positive) {
             return { ...prev, positive: prev.positive + next.value };
           }
           return { ...prev, negative: prev.negative + next.value };
@@ -64,8 +69,8 @@ export default class ReportsCommand {
               labels: [
                 {
                   text: formatToCurrency(data.positive - data.negative),
-                    //.toPrecision(2)
-                    //.toString(),
+                  //.toPrecision(2)
+                  //.toString(),
                   font: { size: 20 },
                 },
                 { text: 'total' },

@@ -25,16 +25,18 @@ export default class TransactionsCommand {
         user.owner as unknown as UserEntity,
       ).then(
         (data) =>
-          data.flatMap((item) =>
-            item.subcategories
-              ? [
-                  item,
-                  item.subcategories.map((i) => ({
-                    ...i,
-                    name: `[${item.name}] ${i.name}`,
-                  })),
-                ].flat()
-              : item,2
+          data.flatMap(
+            (item) =>
+              item.subcategories
+                ? [
+                    item,
+                    item.subcategories.map((i) => ({
+                      ...i,
+                      name: `[${item.name}] ${i.name}`,
+                    })),
+                  ].flat()
+                : item,
+            2,
           ) as CategoryEntity[],
       );
 

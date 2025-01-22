@@ -10,9 +10,9 @@ export class CategoriesServices {
       .andWhere(`category.owner = ${owner.id}`)
       .getMany();
     // return await qb
-      // .where('category.owner = :owner', {
-      //   owner: owner.id,
-      // })
-      // .getMany();
+    // .where('category.owner = :owner', {
+    //   owner: owner.id,
+    // })
+    // .getMany();
   }
 }

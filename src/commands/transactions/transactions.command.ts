@@ -7,7 +7,7 @@ import { UserServices } from '../../services/user.service';
 import { actionsMapper } from './subcommands';
 import { CategoriesServices } from '../../services/categories.service';
 import { AccountsServices } from '../../services/accounts.service';
-import { UserEntity ,CategoryEntity} from '../../database/entities';
+import { UserEntity, CategoryEntity } from '../../database/entities';
 import { TransferSubcommand } from './subcommands/transfer';
 import { CreateTransactionCommand } from './subcommands/create';
 import { ListTransactionsCommand } from './subcommands/list';
@@ -40,20 +40,22 @@ export default class TransactionsCommand {
     }
 
     if (focusedValue.name === 'category') {
-       const categories = await CategoriesServices.findOwns(
+      const categories = await CategoriesServices.findOwns(
         user.owner as unknown as UserEntity,
       ).then(
         (data) =>
-          data.flatMap((item) =>
-            item.subcategories
-              ? [
-                  item,
-                  item.subcategories.map((i) => ({
-                    ...i,
-                    name: `[${item.name}] ${i.name}`,
-                  })),
-                ].flat()
-              : item,2
+          data.flatMap(
+            (item) =>
+              item.subcategories
+                ? [
+                    item,
+                    item.subcategories.map((i) => ({
+                      ...i,
+                      name: `[${item.name}] ${i.name}`,
+                    })),
+                  ].flat()
+                : item,
+            2,
           ) as CategoryEntity[],
       );
 
