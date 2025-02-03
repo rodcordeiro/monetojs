@@ -1,6 +1,6 @@
 {
   "name": "monetojs",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "index.js",
   "scripts": {
     "start:prod": "node dist/index.js",
@@ -16,14 +16,14 @@
   "license": "MIT",
   "description": "",
   "devDependencies": {
-    "@eslint/js": "^9.18.0",
-    "@types/node": "^22.10.6",
-    "eslint": "^9.18.0",
+    "@eslint/js": "^9.19.0",
+    "@types/node": "^22.13.0",
+    "eslint": "^9.19.0",
     "globals": "^15.14.0",
     "prettier": "^3.4.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.22.0"
   },
   "dependencies": {
     "@discordjs/builders": "^1.10.0",
