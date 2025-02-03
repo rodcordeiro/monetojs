@@ -92,8 +92,14 @@ export class CreateTransactionCommand {
             value: formatToCurrency(item.value as number),
             inline: true,
           },
-          { name: 'Category', value: item.category.toString(), inline: false },
-          { name: 'Category', value: item.account.toString(), inline: false },
+          { name: '\u200B', value: '\u200B', inline: true },
+          { name: 'Category', value: item.category.toString(), inline: true },
+          { name: 'Account', value: item.account.toString(), inline: true },
+          {
+            name: 'Description',
+            value: item.description.toString(),
+            inline: false,
+          },
         ],
         {
           title: 'Nova transação',
