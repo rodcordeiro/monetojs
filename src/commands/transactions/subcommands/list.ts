@@ -42,7 +42,19 @@ export class ListTransactionsCommand {
           ])
           .filter(Boolean) || [];
       const fields = Object.fromEntries(options);
-      const transactions = await TransactionsServices.findOwns(user, fields);
+
+      const transactions = await TransactionsServices.findOwns(user, (qb) => {
+        if (fields.category) {
+          qb.andWhere('b.uuid = :category', {
+            category: fields.category,
+          });
+        }
+        if (fields.account) {
+          qb.andWhere('c.uuid = :account', {
+            account: fields.account,
+          });
+        }
+      });
 
       const embeds = createBatch(transactions, 5).map((data, index, arr) =>
         createEmbed(
