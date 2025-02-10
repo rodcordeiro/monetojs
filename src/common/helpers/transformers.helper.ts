@@ -12,6 +12,13 @@ export const formatToCurrency = (value: number): string =>
     currency: 'BRL',
   }).format(value);
 
+export function formatToCurrencyAsNumber(value: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
 export const splitNumberCreditCard = (num: number): string[] => {
   if (!num) return [];
   const numStr = num.toString();

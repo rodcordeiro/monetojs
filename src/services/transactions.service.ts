@@ -1,3 +1,4 @@
+import { SelectQueryBuilder } from 'typeorm';
 import { cleanReturned } from '../common/helpers/cleaner.helper';
 import { TransactionsEntity, UserEntity } from '../database/entities';
 import {
@@ -10,7 +11,7 @@ import { randomUUID } from 'crypto';
 export class TransactionsServices {
   static async findOwns(
     user: UserEntity,
-    options?: { category?: string; account?: string },
+    filters?: (qb: SelectQueryBuilder<TransactionsEntity>) => void,
   ) {
     const qb = TransactionsRepository.createQueryBuilder('a');
 
@@ -25,16 +26,8 @@ export class TransactionsServices {
     ]);
     qb.leftJoinAndSelect('a.category', 'b', 'a.category = b.id');
     qb.leftJoinAndSelect('a.account', 'c', 'a.account = c.id');
-    if (options?.category) {
-      qb.andWhere('b.uuid = :category', {
-        category: options.category,
-      });
-    }
-
-    if (options?.account) {
-      qb.andWhere('c.uuid = :account', {
-        account: options.account,
-      });
+    if (filters) {
+      filters(qb);
     }
 
     qb.orderBy('a.date', 'DESC').skip(0).take(15);
