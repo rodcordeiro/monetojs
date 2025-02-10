@@ -2,7 +2,7 @@ FROM node:22 AS builder
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN npm install -g pnpm@8.15.5
+RUN npm install -g pnpm
 
 WORKDIR /bot
 
