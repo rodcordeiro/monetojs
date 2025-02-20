@@ -9,7 +9,7 @@ import { Pagination } from 'pagination.djs';
 import { createEmbed } from '../../../common/helpers/embeds.helper';
 import { createBatch } from '../../../common/helpers/batch.helper';
 import { TransactionsServices } from '../../../services/transactions.service';
-import { UserEntity } from '../../../database/entities';
+import { AccountEntity, UserEntity } from '../../../database/entities';
 import { StringUtils } from '../../../common/helpers/string.helper';
 import { formatToCurrency } from '../../../common/helpers/transformers.helper';
 
@@ -55,7 +55,7 @@ export class ListTransactionsCommand {
           });
         }
       });
-
+      console.log(transactions[0]);
       const embeds = createBatch(transactions, 5).map((data, index, arr) =>
         createEmbed(
           data,
@@ -71,13 +71,20 @@ export class ListTransactionsCommand {
               inline: true,
             },
             {
-              name: 'Description',
+              name: 'Conta',
+              value: StringUtils.Capitalize(
+                (item.account as unknown as AccountEntity).name,
+              ),
+              inline: true,
+            },
+            {
+              name: 'Descrição',
               value: StringUtils.Capitalize(item.description.toString()),
               inline: false,
             },
           ],
           {
-            title: 'Aqui estão suas últimas 15 transações:',
+            title: `Aqui estão suas últimas ${transactions.length} transações:`,
             page: index + 1,
             totalPages: arr.length,
             totalItems: transactions.length,
