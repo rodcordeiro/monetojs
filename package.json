@@ -1,6 +1,6 @@
 {
   "name": "monetojs",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "main": "index.js",
   "scripts": {
     "start:prod": "node dist/index.js",
