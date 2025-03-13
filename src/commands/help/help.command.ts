@@ -1,4 +1,8 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction } from 'discord.js';
+import {
+  SlashCommandBuilder,
+  SlashCommandSubcommandBuilder,
+  ChatInputCommandInteraction,
+} from 'discord.js';
 import { version } from '../../../package.json';
 
 import { client } from '../../core/discord/client.discord';
@@ -14,13 +18,29 @@ export default class HelpCommand {
 
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply({ ephemeral: true });
-    const commandData = client.commands?.map((c) => {
-      return {
-        name: c.data.name,
-        value:
-          (c.data as unknown as Record<string, string>).description || '\u200B',
-      };
-    });
+    const commandData = client.commands
+      ?.map((c) => {
+        const payload = [
+          {
+            name: c.data.name,
+            value:
+              (c.data as unknown as Record<string, string>).description ||
+              '\u200B',
+          },
+        ];
+        if (c.data.options) {
+          c.data.options.map((option) => {
+            if (option instanceof SlashCommandSubcommandBuilder) {
+              payload.push({
+                name: `${c.data.name} ${option.name}`,
+                value: option.description || '\u200B',
+              });
+            }
+          });
+        }
+        return payload;
+      })
+      .flat(2);
 
     const embeds = createBatch(commandData ?? [], 6).map((data) =>
       createEmbed(
