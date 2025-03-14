@@ -54,6 +54,7 @@ export class ListTransactionsCommand {
             account: fields.account,
           });
         }
+        qb.orderBy('a.date', 'DESC').skip(0).take(15);
       });
       console.log(transactions[0]);
       const embeds = createBatch(transactions, 5).map((data, index, arr) =>

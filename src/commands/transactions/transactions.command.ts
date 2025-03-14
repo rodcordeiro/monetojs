@@ -11,6 +11,8 @@ import { UserEntity, CategoryEntity } from '../../database/entities';
 import { TransferSubcommand } from './subcommands/transfer';
 import { CreateTransactionCommand } from './subcommands/create';
 import { ListTransactionsCommand } from './subcommands/list';
+import { TransactionsServices } from '../../services/transactions.service';
+import { UpdateTransactionCommand } from './subcommands/update';
 
 export default class TransactionsCommand {
   data = new SlashCommandBuilder()
@@ -18,8 +20,8 @@ export default class TransactionsCommand {
     .setDescription('List users last transactions')
     .addSubcommand(new TransferSubcommand().data)
     .addSubcommand(new CreateTransactionCommand().data)
-    .addSubcommand(new ListTransactionsCommand().data);
-
+    .addSubcommand(new ListTransactionsCommand().data)
+    .addSubcommand(new UpdateTransactionCommand().data);
   async autocomplete(interaction: AutocompleteInteraction) {
     const focusedValue = interaction.options.getFocused(true);
     let filtered: Array<AutocompleteOption> = [];
@@ -66,7 +68,28 @@ export default class TransactionsCommand {
         .flatMap(({ name, uuid }) => ({ name, value: uuid }))
         .slice(0, 10);
     }
-
+    if (focusedValue.name === 'transaction') {
+      const transactions = await TransactionsServices.findOwns(
+        user.owner as unknown as UserEntity,
+        (qb) => {
+          if (focusedValue.value) {
+            qb.andWhere('a.description like :description', {
+              description: `%${focusedValue.value}%`,
+            });
+          }
+          qb.orderBy('a.date', 'DESC').skip(0).take(10);
+        },
+      );
+      filtered = transactions
+        .filter((transaction) =>
+          transaction.description?.toLowerCase().includes(focusedValue.value),
+        )
+        .flatMap(({ description, id }) => ({
+          name: description,
+          value: id.toString(),
+        }))
+        .slice(0, 10);
+    }
     await interaction.respond(filtered);
   }
 
