@@ -30,8 +30,6 @@ export class TransactionsServices {
       filters(qb);
     }
 
-    qb.orderBy('a.date', 'DESC').skip(0).take(15);
-
     qb.andWhere('a.owner = :owner', {
       owner: user.id,
     });

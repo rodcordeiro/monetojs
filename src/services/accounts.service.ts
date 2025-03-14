@@ -10,7 +10,8 @@ export class AccountsServices {
     return await qb
       .where('account.owner = :owner', {
         owner: owner.id,
-      }).orderBy('account.name')
+      })
+      .orderBy('account.name')
       .getMany();
   }
   static async listPaymentTypes() {
