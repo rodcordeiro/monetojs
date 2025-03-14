@@ -28,8 +28,13 @@ export default class HelpCommand {
               '\u200B',
           },
         ];
-        if (c.data.options) {
-          c.data.options.map((option) => {
+
+        /* eslint-disable  @typescript-eslint/no-explicit-any */
+
+        if ((c.data as any).options) {
+          /* eslint-disable  @typescript-eslint/no-explicit-any */
+
+          (c.data as any).options.map((option: any) => {
             if (option instanceof SlashCommandSubcommandBuilder) {
               payload.push({
                 name: `${c.data.name} ${option.name}`,
