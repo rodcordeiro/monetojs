@@ -12,8 +12,8 @@ importers:
         specifier: ^1.10.1
         version: 1.10.1
       '@rodcordeiro/lib':
-        specifier: ^1.1.2
-        version: 1.1.2
+        specifier: ^1.2.0
+        version: 1.2.0
       discord.js:
         specifier: ^14.18.0
         version: 14.18.0
@@ -322,8 +322,8 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@rodcordeiro/lib@1.1.2':
-    resolution: {integrity: sha512-pI85D4UsaBmgXE5qgTkX8+TdDk27BYT5FP8+RsKSwxZOcu4zieaHY12o188iG3S20pgIuTMq/a91JdrRRbScOQ==}
+  '@rodcordeiro/lib@1.2.0':
+    resolution: {integrity: sha512-2OtkTgkgbzBgoaV3GgcB3ebP+wBE7M1+osgMmCxyV4KvBfy3MDf7XxsakdNoEwJeKpasZTVMCO3M4pcKjUiHPw==}
     engines: {node: '>=18.0.0'}
 
   '@sapphire/async-queue@1.5.5':
@@ -1335,7 +1335,7 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@rodcordeiro/lib@1.1.2': {}
+  '@rodcordeiro/lib@1.2.0': {}
 
   '@sapphire/async-queue@1.5.5': {}
 
